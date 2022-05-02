@@ -13,7 +13,7 @@ NULL="/dev/null"
 
 INPUTS=('500' '1000' '5000' '10000')
 ANSWERS=('7117' '14390' '72505' '146919')
-EXEC=10
+EXEC=2
 CORES=6
 
 
@@ -62,12 +62,11 @@ testResults() {
 calculo() {
     CORE="${1}"
     info2 "Cores: $CORE"
-    export OMP_NUM_THREADS=$CORE
 
     for ((cont=0; cont<${#INPUTS[@]}; cont++)); do
         info "-> ${INPUTS[$cont]}"
         for num in $(seq 1 $EXEC); do
-            ./a.out < inputs/${INPUTS[$cont]} >> resultados/core$CORE/results_${INPUTS[$cont]}.txt 2> $NULL
+						mpirun -np $CORE ./a.out < inputs/${INPUTS[$cont]} >> resultados/core$CORE/results_${INPUTS[$cont]}.txt 2> $NULL
             calc="$(expr 100 \* $num / $EXEC)"
             loading "$calc%"
         done
@@ -95,7 +94,7 @@ rm -rf a.out
 
 mkdir resultados
 
-gcc -O3 -fopenmp knapSack.c
+mpiCC -O3 knapSack.c
 
 for num in $(seq 1 $CORES);do
     mkdir resultados/core$num
