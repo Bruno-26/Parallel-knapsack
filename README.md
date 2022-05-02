@@ -1,6 +1,3 @@
-# Parallel-knapsack
-Programação Paralela - 2021-2
-
 # Bounded 0-1 Knapsack Problem
 Problema de mochila 0-1 limitada
 O problema da mochila limitada é um problema clássico de alocação de recursos
